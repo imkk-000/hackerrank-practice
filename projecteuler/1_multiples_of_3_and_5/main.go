@@ -9,19 +9,15 @@ import (
 	"strings"
 )
 
-func SumOf(number int) int64 {
-	var sum int64
-	var i int
-	for i = 3; i < number; i += 3 {
-		if i%15 == 0 {
-			continue
-		}
-		sum += int64(i)
-	}
-	for i = 5; i < number; i += 5 {
-		sum += int64(i)
-	}
-	return sum
+func Sum1ToN(number int64) int64 {
+	return (number*number + number) / 2
+}
+
+func SumOf(number int64) int64 {
+	number--
+	return (Sum1ToN(number/3) * 3) +
+		(Sum1ToN(number/5) * 5) -
+		(Sum1ToN(number/15) * 15)
 }
 
 func Exec() {
@@ -29,7 +25,7 @@ func Exec() {
 	t, _ := strconv.Atoi(ReadLine(reader))
 	for i := 0; i < t; i++ {
 		n, _ := strconv.Atoi(ReadLine(reader))
-		fmt.Println(SumOf(n))
+		fmt.Println(SumOf(int64(n)))
 	}
 }
 

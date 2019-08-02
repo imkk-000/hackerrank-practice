@@ -40,3 +40,11 @@ func TestSumOfInput10ShouldBeNumber23(t *testing.T) {
 
 	assert.Equal(t, expectedNumber, actualNumber)
 }
+
+func TestSum1ToNInput10ShouldBeNumber55(t *testing.T) {
+	expectedNumber := int64(55)
+
+	actualNumber := Sum1ToN(10)
+
+	assert.Equal(t, expectedNumber, actualNumber)
+}
