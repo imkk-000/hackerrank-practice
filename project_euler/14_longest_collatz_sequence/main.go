@@ -9,12 +9,29 @@ import (
 	"strings"
 )
 
-func FindCollatzSequenceStep(N int) int {
-	var step = 1
+const cacheLimit = 5000000
+
+var cachingStep = make([]int, cacheLimit+1)
+var cachingLongest = make([]int, cacheLimit+1)
+
+func LoadCache(limit int) {
+	var maxStep, maxN int
+	for i := 1; i <= limit; i++ {
+		cachingStep[i] = FindCollatzSequenceStep(i)
+		if maxStep <= cachingStep[i] {
+			maxStep = cachingStep[i]
+			maxN = i
+		}
+		cachingLongest[i] = maxN
+	}
+}
+
+func FindCollatzSequenceStep(N int) (step int) {
+	step = 1
 	for N != 1 {
 		if N < cacheLimit {
-			if caching[N] > 0 {
-				return caching[N] + step
+			if cachingStep[N] > 0 {
+				return cachingStep[N] + step - 1
 			}
 		}
 		if N%2 == 0 {
@@ -24,29 +41,15 @@ func FindCollatzSequenceStep(N int) int {
 		}
 		step++
 	}
-	return step
+	return
 }
 
 func GetLongestCollatzSequenceStep(N int) int {
-	var maxStep int
-	var maxN = 1
-	for i := N; i >= 1; i-- {
-		if maxStep < caching[i] {
-			maxStep = caching[i]
-			maxN = i
-		}
-	}
-	return maxN
+	return cachingLongest[N]
 }
 
-const cacheLimit = 5000001
-
-var caching = make([]int, cacheLimit)
-
 func main() {
-	for i := 2; i < cacheLimit; i++ {
-		caching[i] = FindCollatzSequenceStep(i)
-	}
+	LoadCache(cacheLimit)
 
 	reader := bufio.NewReader(os.Stdin)
 	t, _ := strconv.Atoi(readLine(reader))
