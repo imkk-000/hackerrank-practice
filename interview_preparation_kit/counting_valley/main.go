@@ -9,13 +9,10 @@ import (
 )
 
 func StepToSeaLevelFlag(step rune) int {
-	switch step {
-	case 'D':
+	if step == 'D' {
 		return -1
-	case 'U':
-		return 1
 	}
-	return 0
+	return 1
 }
 
 func uphill(step rune) bool {
@@ -34,14 +31,11 @@ func CountValley(sequenceStep string) (valleyCounter int) {
 			valleyCounter++
 		}
 	}
-	if seaLevel < 0 {
-		valleyCounter++
-	}
 	return
 }
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 	readLine(reader)
 	fmt.Println(CountValley(readLine(reader)))
 }
