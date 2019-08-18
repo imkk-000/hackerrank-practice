@@ -1,0 +1,55 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+)
+
+func StepToSeaLevelFlag(step rune) int {
+	switch step {
+	case 'D':
+		return -1
+	case 'U':
+		return 1
+	}
+	return 0
+}
+
+func uphill(step rune) bool {
+	return step == 'U'
+}
+
+func downhill(step rune) bool {
+	return step == 'D'
+}
+
+func CountValley(sequenceStep string) (valleyCounter int) {
+	var seaLevel int
+	for _, step := range sequenceStep {
+		seaLevel += StepToSeaLevelFlag(step)
+		if seaLevel == 0 && uphill(step) {
+			valleyCounter++
+		}
+	}
+	if seaLevel < 0 {
+		valleyCounter++
+	}
+	return
+}
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+	readLine(reader)
+	fmt.Println(CountValley(readLine(reader)))
+}
+
+func readLine(reader *bufio.Reader) string {
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
+	return strings.TrimSpace(string(str))
+}
